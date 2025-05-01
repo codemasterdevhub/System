@@ -1,0 +1,2275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="dummy-csrf-token-for-demo">
+    <title>E-Learning: A Comparative Study of Web Security Protocols Implementing Best Practices for Secure Web Applications</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/introjs.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+          --primary: #6366f1;
+          --secondary: #4f46e5;
+          --accent: #818cf8;
+          --text: #f8fafc;
+          --bg: #0f172a;
+          --card-bg: rgba(255, 255, 255, 0.08);
+          --hover-bg: rgba(255, 255, 255, 0.12);
+          --progress-color: #4ade80;
+          --modal-bg: #1e293b;
+          --modal-text: #f8fafc;
+        }
+
+        [data-theme="light"] {
+          --primary: #4f46e5;
+          --secondary: #4338ca;
+          --accent: #6366f1;
+          --text: #1e293b;
+          --bg: #f8fafc;
+          --card-bg: rgba(255, 255, 255, 0.9);
+          --hover-bg: rgba(99, 102, 241, 0.1);
+          --progress-color: #10b981;
+          --modal-bg: #ffffff;
+          --modal-text: #1e293b;
+        }
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          scroll-behavior: smooth;
+        }
+
+        body {
+          font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+          color: var(--text);
+          background: var(--bg);
+          min-height: 100vh;
+          transition: background 0.3s, color 0.3s;
+        }
+
+        /* Navigation Styles */
+        nav {
+          position: fixed;
+          width: 100%;
+          padding: 1.25rem 2rem;
+          background: rgba(15, 23, 42, 0.9);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          z-index: 1000;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+          transition: background 0.3s;
+        }
+
+        [data-theme="light"] nav {
+          background: rgba(248, 250, 252, 0.9);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+          font-size: 2rem;
+          font-weight: 700;
+          background: linear-gradient(to right, var(--accent), var(--primary));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          letter-spacing: -1px;
+        }
+
+        .nav-links {
+          display: flex;
+          gap: 2rem;
+          align-items: center;
+        }
+
+        .nav-links a {
+          color: var(--text);
+          text-decoration: none;
+          font-weight: 500;
+          transition: color 0.3s;
+          position: relative;
+          padding: 12px;
+          min-height: 44px;
+          min-width: 44px;
+          display: inline-flex;
+          align-items: center;
+        }
+
+        .nav-links a::after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 2px;
+          bottom: -4px;
+          left: 0;
+          background: var(--accent);
+          transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+          width: 100%;
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
+
+        .dropbtn {
+          color: var(--text);
+          background: var(--card-bg);
+          border: 1px solid var(--accent);
+          font-size: 1em;
+          padding: 0.5rem 1rem;
+          cursor: pointer;
+          font-family: inherit;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+        }
+
+        .dropbtn:hover {
+          background: var(--hover-bg);
+          transform: translateY(-2px);
+        }
+
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          top: calc(100% + 10px);
+          left: 0;
+          background: var(--modal-bg);
+          min-width: 200px;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+          border-radius: 8px;
+          overflow: hidden;
+          z-index: 1000;
+          border: 2px solid var(--accent);
+          transition: all 0.3s ease;
+        }
+
+        .dropdown-content a {
+          padding: 12px 20px;
+          border-bottom: 1px solid var(--hover-bg);
+        }
+
+        .dropdown-content a:last-child {
+          border-bottom: none;
+        }
+
+        .dropdown-content a {
+          color: var(--text);
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+          transition: background 0.3s;
+        }
+
+        .dropdown-content a:hover {
+          background: var(--hover-bg);
+        }
+
+        #userDropdown {
+          color: var(--text);
+          background: transparent;
+          border: 1px solid var(--accent);
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+        }
+
+        #userDropdown:hover {
+          background: var(--hover-bg);
+        }
+
+        .dropdown:hover .dropdown-content {
+          display: block;
+          animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-buttons button {
+          padding: 0.75rem 1.5rem;
+          border: none;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        #loginBtn {
+          background: transparent;
+          color: var(--text);
+          border: 2px solid var(--accent);
+        }
+
+        #registerBtn {
+          background: var(--primary);
+          color: white;
+          margin-left: 1rem;
+          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .auth-buttons button:hover {
+          transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--text);
+            overflow: hidden;
+            perspective: 2px;
+            transform-style: preserve-3d;
+        }
+
+        .hero video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(0.7);
+            transform: translateZ(-1px) scale(1.5);
+            transition: transform 0.5s ease-out;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+            transform: translateZ(0);
+            transition: transform 0.5s ease-out;
+        }
+
+        .hero:hover .hero-content {
+            transform: translateZ(0.5px) scale(1.05);
+        }
+
+        .hero:hover video {
+            transform: translateZ(-1.2px) scale(1.6);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            animation: fadeInUp 1s ease-out, float 3s ease-in-out infinite;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Magic Card Team Section */
+        .perspective {
+            perspective: 1200px;
+        }
+        
+        .magic-card-inner {
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 1.5rem;
+            will-change: transform;
+        }
+        
+        .magic-card:focus-within .magic-card-inner,
+        .magic-card:hover .magic-card-inner {
+            transform: rotateY(180deg);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .magic-card-front,
+        .magic-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .magic-card-front img,
+        .magic-card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1.5rem;
+            transition: transform 0.8s ease;
+        }
+        
+        .magic-card:focus-within .magic-card-front img,
+        .magic-card:hover .magic-card-front img {
+            transform: scale(1.05);
+            filter: brightness(0.85);
+        }
+        
+        .magic-card-back {
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #bbf7d0 0%, #93c5fd 100%);
+            color: #1e293b;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.7);
+        }
+        
+        .magic-card-back .small-image {
+            width: 8rem;
+            height: 8rem;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transition: transform 0.8s ease;
+        }
+        
+        .magic-card:focus-within .magic-card-back .small-image,
+        .magic-card:hover .magic-card-back .small-image {
+            transform: scale(1.05);
+        }
+        
+        .magic-card h2 {
+            width: 100%;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.375rem;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: 0.02em;
+        }
+        
+        .magic-card p {
+            width: 100%;
+            text-align: center;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #334155;
+        }
+
+        /* Feature Cards Section */
+        .features {
+          background: var(--bg);
+          padding: 6rem 0;
+        }
+
+        .features .section-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 2rem;
+        }
+
+        .features .section-title {
+          font-size: 2.5rem;
+          color: var(--text);
+          text-align: center;
+          margin-bottom: 3rem;
+          position: relative;
+          display: inline-block;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .features .section-title::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background: linear-gradient(to right, var(--accent), var(--primary));
+          border-radius: 3px;
+        }
+
+        .feature-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 2rem;
+          padding: 1rem;
+        }
+
+        .feature-card {
+          background: var(--card-bg);
+          border-radius: 16px;
+          padding: 2.5rem;
+          text-align: center;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          position: relative;
+          overflow: hidden;
+          z-index: 1;
+          min-height: 300px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .feature-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, var(--primary), var(--accent));
+          opacity: 0;
+          transition: opacity 0.3s;
+          z-index: -1;
+        }
+
+        .feature-card:hover::before {
+          opacity: 0.1;
+        }
+
+        .feature-card:hover {
+          transform: translateY(-10px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+          border-color: var(--accent);
+        }
+
+        .feature-card i {
+          font-size: 3rem;
+          color: var(--accent);
+          margin-bottom: 1.5rem;
+          transition: transform 0.3s, color 0.3s;
+        }
+
+        .feature-card:hover i {
+          transform: scale(1.2);
+          color: var(--primary);
+        }
+
+        .feature-card h3 {
+          font-size: 1.5rem;
+          color: var(--text);
+          margin-bottom: 1rem;
+          position: relative;
+          padding-bottom: 0.5rem;
+        }
+
+        .feature-card h3::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 50px;
+          height: 3px;
+          background: var(--accent);
+          transition: width 0.3s;
+        }
+
+        .feature-card:hover h3::after {
+          width: 100px;
+        }
+
+        .feature-card p {
+          color: var(--text);
+          opacity: 0.9;
+          line-height: 1.6;
+          margin-top: 1rem;
+        }
+
+        /* Pulse animation for icons */
+        @keyframes pulse {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.1);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        .feature-card i {
+          animation: pulse 2s infinite;
+        }
+
+        .feature-card:hover i {
+          animation: none;
+        }
+
+        /* Section Container */
+        .section-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 2rem;
+        }
+
+        .section-title {
+          font-size: 2.5rem;
+          color: var(--text);
+          text-align: center;
+          margin-bottom: 3rem;
+          position: relative;
+          display: inline-block;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .section-title::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background: linear-gradient(to right, var(--accent), var(--primary));
+          border-radius: 3px;
+        }
+
+        /* Team Section */
+        .team {
+          background: var(--bg);
+          padding: 6rem 0;
+        }
+
+        /* Course Cards */
+        .course-category {
+          margin-bottom: 4rem;
+        }
+
+        .course-grid {
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        @media (min-width: 1200px) {
+          .course-grid {
+              grid-template-columns: repeat(3, 1fr);
+          }
+        }
+
+        .course-card {
+          background: var(--card-bg);
+          backdrop-filter: blur(12px);
+          border-radius: 24px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          padding: 2.5rem;
+          color: var(--text);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          min-height: 400px;
+          width: 100%;
+          max-width: 400px;
+          margin: 0 auto;
+          transform: translateY(0);
+          padding-bottom: 2rem;
+          cursor: pointer;
+          transform-style: preserve-3d;
+          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .course-card::after {
+          content: '';
+          position: absolute;
+          inset: -2px;
+          background: linear-gradient(45deg, var(--primary), var(--accent));
+          border-radius: 18px;
+          z-index: -1;
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+
+        .course-card:hover {
+          transform: translateY(-10px) rotateX(5deg);
+          box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+          border-color: var(--accent);
+        }
+
+        .course-card:hover::after {
+          opacity: 0.5;
+        }
+
+        .course-category h2 {
+          color: var(--accent);
+          font-size: 2rem;
+          margin-bottom: 2rem;
+          text-align: center;
+        }
+
+        .course-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 2.5rem;
+          padding: 2rem;
+          width: 100%;
+          margin-bottom: 3rem;
+        }
+
+        .course-card h3 {
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
+          color: var(--accent);
+          font-weight: 700;
+          line-height: 1.3;
+          position: relative;
+          padding-left: 2rem;
+        }
+
+        .course-card h3::before {
+          content: '📚';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .course-card p {
+          margin-bottom: 1.5rem;
+          line-height: 1.7;
+          color: var(--text);
+          opacity: 0.9;
+          flex-grow: 1;
+        }
+
+        .course-card a {
+          display: inline-block;
+          padding: 0.875rem 1.75rem;
+          background: linear-gradient(135deg, var(--primary), var(--accent));
+          color: white;
+          text-decoration: none;
+          border-radius: 12px;
+          font-weight: 600;
+          transition: all 0.3s;
+          text-align: center;
+          box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+          width: 100%;
+        }
+
+        .course-card a:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+          background: linear-gradient(135deg, var(--accent), var(--primary));
+        }
+
+        .course-card .duration {
+          font-size: 0.9rem;
+          color: var(--text);
+          opacity: 0.7;
+          margin-bottom: 1rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .course-card .duration::before {
+          content: '⏱️';
+        }
+
+        /* Instructor Cards */
+        .instructor-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 2.5rem;
+          padding: 1rem 0;
+        }
+
+        .instructor-card {
+          background: var(--card-bg);
+          border-radius: 16px;
+          padding: 2rem;
+          transition: transform 0.3s, box-shadow 0.3s;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+
+        .instructor-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .instructor-card img {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          margin: 0 auto 1.5rem;
+        }
+
+        .instructor-card h3 {
+          font-size: 1.25rem;
+          margin-bottom: 0.5rem;
+          color: var(--accent);
+        }
+
+        .instructor-card .role {
+          color: var(--text);
+          opacity: 0.8;
+          font-size: 0.9rem;
+          margin-bottom: 1rem;
+        }
+
+        .instructor-card p {
+          line-height: 1.6;
+          color: var(--text);
+          opacity: 0.9;
+        }
+
+        /* Support Cards */
+        .support-content {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 2rem;
+          padding: 1rem 0;
+        }
+
+        .support-card {
+          background: var(--card-bg);
+          border-radius: 16px;
+          padding: 2rem;
+          text-align: center;
+          transition: transform 0.3s, box-shadow 0.3s;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .support-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .support-card i {
+          font-size: 2rem;
+          color: var(--accent);
+          margin-bottom: 1rem;
+        }
+
+        .support-card h3 {
+          color: var(--text);
+          margin-bottom: 1rem;
+        }
+
+        .support-card p {
+          color: var(--text);
+          opacity: 0.8;
+        }
+
+        /* Contact Section */
+        .contact-content {
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .contact-info {
+          background: var(--card-bg);
+          border-radius: 16px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+        }
+
+        .contact-item {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 1.5rem;
+          color: var(--text);
+        }
+
+        .contact-item i {
+          color: var(--accent);
+          font-size: 1.25rem;
+        }
+
+        .map-container {
+          border-radius: 16px;
+          overflow: hidden;
+          margin-top: 2rem;
+        }
+
+        .map-container iframe {
+          border: none;
+          width: 100%;
+          height: 300px;
+        }
+
+        /* Modal Styles */
+        .modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(8px);
+          z-index: 1000;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+          display: flex;
+          opacity: 1;
+        }
+
+        .modal-content {
+          background: var(--modal-bg);
+          border-radius: 24px;
+          padding: 2rem;
+          max-width: 600px;
+          width: 90%;
+          margin: auto;
+          position: relative;
+          border: 1px solid var(--accent);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+          transform: scale(0.8);
+          transition: transform 0.3s ease;
+          color: var(--modal-text);
+          max-height: 90vh;
+          overflow-y: auto;
+        }
+
+        .modal.active .modal-content {
+          transform: scale(1);
+        }
+
+        .close-modal {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          background: none;
+          border: none;
+          color: var(--modal-text);
+          font-size: 1.5rem;
+          cursor: pointer;
+          padding: 0.5rem;
+          transition: transform 0.3s;
+        }
+
+        .close-modal:hover {
+          transform: rotate(90deg);
+        }
+
+        .modal-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header h2 {
+          color: var(--accent);
+          margin: 0;
+          flex: 1;
+        }
+
+        .modal-body {
+          padding: 1rem 0;
+        }
+
+        .modal-course-details {
+          margin-bottom: 2rem;
+        }
+
+        .modal-course-details p {
+          line-height: 1.6;
+          margin-bottom: 1.5rem;
+        }
+
+        .syllabus {
+          margin-top: 1.5rem;
+        }
+
+        .syllabus h3 {
+          color: var(--accent);
+          margin-bottom: 1rem;
+        }
+
+        .syllabus ul {
+          list-style-type: none;
+        }
+
+        .syllabus li {
+          padding: 0.5rem 0;
+          border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+          display: flex;
+          align-items: center;
+        }
+
+        .syllabus li::before {
+          content: '▹';
+          color: var(--accent);
+          margin-right: 0.5rem;
+        }
+
+        .modal-btn {
+          display: inline-block;
+          padding: 0.875rem 1.75rem;
+          background: linear-gradient(135deg, var(--primary), var(--accent));
+          color: white;
+          text-decoration: none;
+          border-radius: 12px;
+          font-weight: 600;
+          transition: all 0.3s;
+          text-align: center;
+          box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+          width: 100%;
+          margin-top: 1rem;
+          border: none;
+          cursor: pointer;
+        }
+
+        .modal-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+          background: linear-gradient(135deg, var(--accent), var(--primary));
+        }
+
+        /* Auth Modal Styles */
+        .auth-modal {
+          color: white;
+          max-width: 900px;
+          display: flex;
+          padding: 0 !important;
+          overflow: hidden;
+          border-radius: 16px;
+        }
+
+        .auth-form-section {
+          flex: 1;
+          padding: 3rem;
+          background: var(--modal-bg);
+        }
+
+        .auth-info-section {
+          flex: 1;
+          padding: 3rem;
+          background: linear-gradient(135deg, #2a2a72, #1e1e4b);
+          color: white;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        }
+
+        .auth-form-section h2 {
+          color: var(--accent);
+          font-size: 2rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .auth-form-section p {
+          color: var(--text);
+          opacity: 0.7;
+          margin-bottom: 2rem;
+        }
+
+        .auth-form-section form {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+
+        .auth-form-section input {
+          padding: 1rem;
+          border-radius: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.05);
+          color: var(--text);
+          font-size: 1rem;
+          width: 100%;
+          transition: all 0.3s;
+        }
+
+        .auth-form-section input:focus {
+          border-color: var(--accent);
+          outline: none;
+        }
+
+        .auth-form-section input::placeholder {
+          color: rgba(255, 255, 255, 0.6);
+        }
+
+        [data-theme="light"] .auth-form-section input::placeholder {
+          color: rgba(30, 41, 59, 0.6);
+        }
+
+        .auth-form-section button {
+          background: var(--primary);
+          color: white;
+          padding: 1rem;
+          border: none;
+          border-radius: 8px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s;
+        }
+
+        .auth-form-section button:hover {
+          background: var(--secondary);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+          background: transparent;
+          border: none;
+          color: var(--text);
+          font-size: 1.2rem;
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 50%;
+          transition: transform 0.3s;
+        }
+
+        .theme-toggle:hover {
+          transform: scale(1.1);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+          from {
+              opacity: 0;
+              transform: translateY(20px);
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+        }
+
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+          100% { transform: translateY(0px); }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+          .hero h1 {
+              font-size: 2.5rem;
+          }
+
+          .hero p {
+              font-size: 1rem;
+          }
+
+          .hero video {
+              display: none;
+          }
+
+          .hero {
+              background: url('/assets/images/hero-fallback.jpg') no-repeat center center/cover;
+          }
+
+          .auth-modal {
+              flex-direction: column;
+          }
+
+          .auth-form-section, .auth-info-section {
+              padding: 2rem;
+          }
+
+          .course-grid {
+              grid-template-columns: 1fr;
+          }
+
+          .modal-content {
+              width: 95%;
+              padding: 1.5rem;
+          }
+
+          .feature-grid {
+            grid-template-columns: 1fr;
+          }
+          
+          .feature-card {
+            min-height: 250px;
+            padding: 2rem;
+          }
+          
+          .features .section-title {
+            font-size: 2rem;
+          }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">SecureEdu</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <div class="dropdown">
+                <button class="dropbtn">Learn 
+                    <i class="fas fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#courses">All Courses</a>
+                    <a href="#courses">Web Security Fundamentals</a>
+                    <a href="#courses">Web Development with Security</a>
+                    <a href="#courses">Python for Secure Applications</a>
+                    <a href="#courses">Cybersecurity Operations</a>
+                    <a href="#courses">Mobile App Security</a>
+                    <a href="#courses">Data Science with Security</a>
+                </div>
+            </div>
+            <a href="#team" class="scroll-link">About</a>
+            <a href="#instructors">Instructors</a>
+            <a href="#support">Support</a>
+            <a href="#contact">Contact</a>
+            <div class="auth-buttons">
+                <button id="loginBtn">Login</button>
+                <button id="registerBtn">Register</button>
+            </div>
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light theme">
+                <i class="fas fa-moon" aria-hidden="true"></i>
+            </button>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <video autoplay muted loop playsinline id="heroVideo" poster="/assets/images/hero-fallback.jpg">
+            <source src="background.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-content">
+            <h1>E-Learning Security</h1>
+            <p>A Comparative Study of Web Security Protocols Implementing Best Practices for Secure Web Applications</p>
+        </div>
+    </section>
+
+    <section id="team" class="team">
+        <div class="section-container">
+            <h2 class="section-title">Our Team</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
+                <!-- Team Member 1 -->
+                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
+                    <div class="magic-card-inner">
+                        <div class="magic-card-front">
+                            <img alt="Team member" src="1.jpg" />
+                        </div>
+                        <div class="magic-card-back">
+                            <div class="small-image">
+                                <img alt="Team member" src="1.jpg" />
+                            </div>
+                            <h2>Henvilou Alberto</h2>
+                            <p>Team Leader</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 2 -->
+                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
+                    <div class="magic-card-inner">
+                        <div class="magic-card-front">
+                            <img alt="Team member" src="adrian.jpg" />
+                        </div>
+                        <div class="magic-card-back">
+                            <div class="small-image">
+                                <img alt="Team member" src="adrian.jpg" />
+                            </div>
+                            <h2>Adrian Dumlao</h2>
+                            <p>Security Expert</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 3 -->
+                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
+                    <div class="magic-card-inner">
+                        <div class="magic-card-front">
+                            <img alt="Team member" src="mark.jpg" />
+                        </div>
+                        <div class="magic-card-back">
+                            <div class="small-image">
+                                <img alt="Team member" src="mark.jpg" />
+                            </div>
+                            <h2>Mark Angelo Delos Santos</h2>
+                            <p>Frontend Developer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 4 -->
+                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
+                    <div class="magic-card-inner">
+                        <div class="magic-card-front">
+                            <img alt="Team member" src="mhea.jpg" />
+                        </div>
+                        <div class="magic-card-back">
+                            <div class="small-image">
+                                <img alt="Team member" src="mhea.jpg" />
+                            </div>
+                            <h2>Mheagan Batics Balog</h2>
+                            <p>Backend Developer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 5 -->
+                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
+                    <div class="magic-card-inner">
+                        <div class="magic-card-front">
+                            <img alt="Team member" src="markluis.jpg" />
+                        </div>
+                        <div class="magic-card-back">
+                            <div class="small-image">
+                                <img alt="Team member" src="markluis.jpg" />
+                            </div>
+                            <h2>Mark Luis G. Veronique</h2>
+                            <p>UI/UX Designer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 6 -->
+                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
+                    <div class="magic-card-inner">
+                        <div class="magic-card-front">
+                            <img alt="Team member" src="tristan.jpg" />
+                        </div>
+                        <div class="magic-card-back">
+                            <div class="small-image">
+                                <img alt="Team member" src="tristan.jpg" />
+                            </div>
+                            <h2>Tristan Marc Calubaquib</h2>
+                            <p>Content Creator</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 7 -->
+                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
+                    <div class="magic-card-inner">
+                        <div class="magic-card-front">
+                            <img alt="Team member" src="sebastian.jpg" />
+                        </div>
+                        <div class="magic-card-back">
+                            <div class="small-image">
+                                <img alt="Team member" src="sebastian.jpg" />
+                            </div>
+                            <h2>Sebastian Valmont</h2>
+                            <p>Quality Assurance</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 8 -->
+                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
+                    <div class="magic-card-inner">
+                        <div class="magic-card-front">
+                            <img alt="Team member" src="ken.jpg" />
+                        </div>
+                        <div class="magic-card-back">
+                            <div class="small-image">
+                                <img alt="Team member" src="ken.jpg" />
+                            </div>
+                            <h2>Ken Peregrino</h2>
+                            <p>DevOps Engineer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="section-container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Advanced Security</h3>
+                    <p>Implementation of robust security protocols and best practices</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-lock"></i>
+                    <h3>Data Protection</h3>
+                    <p>Ensuring user data privacy and secure information handling</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Authentication</h3>
+                    <p>Multi-factor authentication and secure user verification</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Secure Coding</h3>
+                    <p>Following industry standards for secure application development</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="courses" class="courses">
+        <div class="section-container">
+            <h2 class="section-title">Featured Courses</h2>
+            <div id="courseContainer"></div>
+        </div>
+    </section>
+
+    <section id="instructors" class="instructors">
+        <div class="section-container">
+            <h2 class="section-title">Our Instructors</h2>
+            <div class="instructor-grid">
+                <div class="instructor-card">
+                    <img src="C6Y4s792_400x400.jpg" alt="Alexa Ramirez">
+                    <h3>Troy Hunt</h3>
+                    <p class="role">Cybersecurity Educator & Microsoft Regional Director</p>
+                    <p>Troy is the creator of Have I Been Pwned, a widely used tool for checking compromised credentials. He teaches developers how to secure web applications using HTTPS, strong authentication, and proper security headers through his blog and online courses.</p>
+                </div>
+                <div class="instructor-card">
+                    <img src="Aurum-Speakers-Bureau-Bruce-Schneier.jpg" alt="Carlo De Guzman">
+                    <h3>Bruce Schneier</h3>
+                    <p class="role">Cryptography Expert & Public Policy Instructor</p>
+                    <p>A renowned figure in cybersecurity, Bruce has authored several books on cryptography and web security. He teaches at Harvard and advises on global cyber policy, with a strong focus on best practices in secure systems and communication protocols.</p>
+                </div>
+                <div class="instructor-card">
+                    <img src="Dr. Angela Yu.webp" alt="Miguel Santos">
+                    <h3>Dr. Angela Yu</h3>
+                    <p class="role">Full-Stack Developer & Online Instructor</p>
+                    <p>Known for her top-rated web development courses on Udemy, Dr. Yu emphasizes building secure applications. Her teachings include HTTPS implementation, secure authentication, and backend protections using Node.js.</p>
+                </div>
+                <div class="instructor-card">
+                    <img src="Kevin Mitnick.jpg" alt="Jessa Lim">
+                    <h3>Kevin Mitnick</h3>
+                    <p class="role">Ethical Hacker & Cybersecurity Consultant</p>
+                    <p>Once a notorious hacker, Kevin became a trusted security advisor and instructor. He educated professionals on real-world threats, social engineering, and penetration testing, making complex web security concepts accessible.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="support" class="support">
+        <div class="section-container">
+            <h2 class="section-title">Support</h2>
+            <div class="support-content">
+                <div class="support-card">
+                    <i class="fas fa-book"></i>
+                    <h3>Learning Resources</h3>
+                    <p>Access our comprehensive documentation and tutorials.</p>
+                </div>
+                <div class="support-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community Forum</h3>
+                    <p>Join our active community of learners and experts.</p>
+                </div>
+                <div class="support-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>Technical Support</h3>
+                    <p>Get help with any technical issues you encounter.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="section-container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <p><a href="mailto:support@quicklearn.com">support@quicklearn.com</a></p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <p>+63 (2) 8123-4567</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Makati City, Metro Manila, Philippines</p>
+                    </div>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.802458282786!2d121.0237!3d14.5548!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c90264a0ed01%3A0x2b066ed57830cace!2sMakati%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1234567890" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Preview Modal -->
+    <div id="courseModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalCourseTitle"></h2>
+            </div>
+            <div class="modal-body">
+                <div class="modal-course-details">
+                    <p id="modalCourseDescription"></p>
+                    <div class="syllabus">
+                        <h3>Syllabus</h3>
+                        <ul id="courseSyllabus"></ul>
+                    </div>
+                </div>
+                <a href="#" id="modalCourseLink" class="modal-btn" target="_blank">Start Learning</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="auth-form-section">
+                <span class="close-modal">&times;</span>
+                <div id="authForms">
+                    <h2>Welcome Back!</h2>
+                    <p>Sign in to access your courses and continue learning.</p>
+                    <form id="loginForm" onsubmit="return validateLoginForm()">
+                        <div class="form-group">
+                            <input type="email" id="loginEmail" placeholder="Email address" required>
+                        </div>
+                        <div class="form-group password-group">
+                            <input type="password" id="loginPassword" placeholder="Password" required>
+                            <i class="fas fa-eye" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                        </div>
+                        <div id="loginError" class="error-message" style="display: none;">
+                            Invalid email or password
+                        </div>
+                        <button type="submit">Sign In</button>
+                        <div class="login-options">
+                            <a href="#" onclick="showAuthForm('register')">Create Account</a>
+                            <a href="#">Forgot Password?</a>
+                        </div>
+                        <div class="social-login">
+                            <p>Or continue with</p>
+                            <div class="social-login-buttons">
+                                <button type="button" class="social-login-button">
+                                    <i class="fab fa-google"></i> Google
+                                </button>
+                                <button type="button" class="social-login-button">
+                                    <i class="fab fa-github"></i> GitHub
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="auth-info-section">
+                <h2>Continue Your Learning Journey</h2>
+                <p>Access over 100+ courses in web development, programming, data science and more.</p>
+                <ul class="feature-list">
+                    <li>
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <h3>Expert Instructors</h3>
+                            <p>Learn from industry professionals</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-certificate"></i>
+                        <div>
+                            <h3>Earn Certificates</h3>
+                            <p>Showcase your achievements</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h3>Community Support</h3>
+                            <p>Connect with fellow learners</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Course data with all categories
+        const courses = {
+            webSecurity: [
+                {
+                    title: "Mastering HTTPS/TLS for Secure Web Apps",
+                    link: "https://www.youtube.com/watch?v=l_wnQ76L6vo",
+                    description: "Learn to implement HTTPS and TLS 1.3 for encrypted communication. Covers certificates, HSTS, and secure configurations.",
+                    duration: "6 hours",
+                    syllabus: ["TLS Basics", "Certificate Management", "HSTS Implementation", "Secure Configurations", "Testing Encryption"]
+                },
+                {
+                    title: "OAuth 2.0: Secure Authentication Flows",
+                    link: "https://www.youtube.com/watch?v=996OiexHze0", 
+                    description: "Dive into OAuth 2.0 for token-based auth. Build secure login systems with refresh tokens and scopes.",
+                    duration: "8 hours",
+                    syllabus: ["OAuth 2.0 Overview", "Authorization Code Flow", "Token Management", "Scope Configuration", "Securing APIs"]
+                },
+                {
+                    title: "SAML for Single Sign-On (SSO)",
+                    link: "https://www.youtube.com/watch?v=EG55Th1oFNE",
+                    description: "Master SAML for federated identity in e-learning platforms. Set up SSO with real-world examples.",
+                    duration: "7 hours",
+                    syllabus: ["SAML Basics", "Identity Providers", "Service Providers", "SSO Setup", "Troubleshooting SAML"]
+                },
+                {
+                    title: "Zero Trust Security Principles",
+                    link: "https://www.youtube.com/watch?v=BgEKZEBU8uE",
+                    description: "Implement Zero Trust in web apps. Learn continuous verification and strict access controls.",
+                    duration: "6 hours",
+                    syllabus: ["Zero Trust Overview", "User Verification", "Device Checks", "Access Policies", "Monitoring Threats"]
+                },
+                {
+                    title: "Secure Coding Practices for Web Dev",
+                    link: "https://www.youtube.com/watch?v=sUANhUfG8P8",
+                    description: "Code securely with OWASP Top 10. Prevent XSS, CSRF, and injection attacks.",
+                    duration: "8 hours",
+                    syllabus: ["OWASP Top 10", "Input Validation", "Secure APIs", "Session Management", "Error Handling"]
+                }
+            ],
+            secureWebDev: [
+                {
+                    title: "Secure Full-Stack JavaScript with Node.js",
+                    link: "https://www.youtube.com/watch?v=z7O9yi-OSfU",
+                    description: "Build secure MERN apps with HTTPS, OAuth 2.0, and JWT for authentication.",
+                    duration: "6-8 hours",
+                    syllabus: ["MERN Setup", "HTTPS Integration", "OAuth 2.0 Login", "JWT Auth", "Secure APIs"]
+                },
+                {
+                    title: "React with Secure Frontend Practices",
+                    link: "https://www.youtube.com/watch?v=urgkyiIvWZY",
+                    description: "Create secure React apps with CSRF protection and secure session handling.",
+                    duration: "12 hours",
+                    syllabus: ["React Security Basics", "CSRF Protection", "Secure State Management", "API Integration", "Testing Security"]
+                },
+                {
+                    title: "Secure REST APIs with Express",
+                    link: "https://www.youtube.com/watch?v=1XxQBXl4Lv8",
+                    description: "Develop REST APIs with TLS encryption, OAuth 2.0, and rate limiting.",
+                    duration: "8 hours",
+                    syllabus: ["Express Setup", "TLS Encryption", "OAuth 2.0 Auth", "Rate Limiting", "API Security Testing"]
+                },
+                {
+                    title: "Next.js with Built-in Security",
+                    link: "https://www.youtube.com/watch?v=UYaLN-wnDR4",
+                    description: "Build server-side rendered apps with Next.js, integrating HTTPS and secure headers.",
+                    duration: "10 hours",
+                    syllabus: ["Next.js Basics", "HTTPS Setup", "Secure Headers", "Authentication", "Deployment"]
+                },
+                {
+                    title: "Secure CMS Development with Strapi",
+                    link: "https://www.youtube.com/watch?v=V18teNIP88U",
+                    description: "Create secure content management systems with Strapi, using OAuth and TLS.",
+                    duration: "15 hours",
+                    syllabus: ["Strapi Basics", "OAuth Integration", "TLS Configuration", "Role-Based Access", "Secure Deployment"]
+                }
+            ],
+            pythonSecurity: [
+                {
+                    title: "Python Security Fundamentals",
+                    link: "https://www.youtube.com/watch?v=4pe1fn3Gus0",
+                    description: "Learn Python for secure app development, focusing on encryption and auth.",
+                    duration: "6 hours",
+                    syllabus: ["Python Security Basics", "Cryptography", "Secure File Handling", "Auth Systems", "Vulnerability Testing"]
+                },
+                {
+                    title: "Django with OAuth 2.0 and TLS",
+                    link: "https://www.youtube.com/watch?v=zh1eA5eNPYs",
+                    description: "Build secure Django apps with OAuth 2.0 login and TLS encryption.",
+                    duration: "10 hours",
+                    syllabus: ["Django Setup", "OAuth 2.0 Integration", "TLS Configuration", "Secure Models", "Deployment"]
+                },
+                {
+                    title: "Flask for Secure REST APIs",
+                    link: "https://www.youtube.com/watch?v=HQbX4mwCZl4",
+                    description: "Develop Flask APIs with HTTPS, OAuth, and secure session management.",
+                    duration: "12 hours",
+                    syllabus: ["Flask Basics", "HTTPS Setup", "OAuth Auth", "Session Security", "API Testing"]
+                },
+                {
+                    title: "Python for Web Scraping Security",
+                    link: "https://www.youtube.com/watch?v=8dTpNajxaH0",
+                    description: "Scrape web data securely with Python, avoiding common vulnerabilities.",
+                    duration: "8 hours",
+                    syllabus: ["Scraping Basics", "Secure Requests", "Data Protection", "Rate Limiting", "Ethical Scraping"]
+                },
+                {
+                    title: "Automating Security Tasks with Python",
+                    link: "https://www.youtube.com/watch?v=FBSisR_3rJs",
+                    description: "Automate security audits and monitoring with Python scripts.",
+                    duration: "8 hours",
+                    syllabus: ["Automation Basics", "Security Scanning", "Log Analysis", "Alert Systems", "Script Security"]
+                }
+            ],
+            cyberOps: [
+                {
+                    title: "Securing E-Learning with HTTPS/TLS",
+                    link: "https://www.youtube.com/watch?v=67Kfsmy_frM",
+                    description: "Configure HTTPS and TLS 1.3 for e-learning platforms. Learn certificate management and HSTS.",
+                    duration: "7 hours",
+                    syllabus: [
+                        "HTTPS Basics",
+                        "TLS 1.3 Setup",
+                        "Certificate Authorities",
+                        "HSTS Policies",
+                        "Security Auditing",
+                    ]
+                },
+                {
+                    title: "Implementing OAuth 2.0 for Platform Security",
+                    link: "https://www.youtube.com/watch?v=ZV5yTm4pT8g",
+                    description: "Set up OAuth 2.0 for secure user authentication in e-learning systems.",
+                    duration: "8 hours",
+                    syllabus: [
+                        "OAuth Flows",
+                       "Token Security",
+                        "Client Configuration",
+                       "API Protection",
+                       "Troubleshooting"
+                    ]
+                },
+                {
+                    title: "SAML for Enterprise E-Learning",
+                    link: "https://www.youtube.com/watch?v=EG55Th1oFNE",
+                    description: "Deploy SAML for SSO in educational platforms, ensuring secure access.",
+                    duration: "7 hours",
+                    syllabus: [
+                       "SAML Framework",
+                        "Identity Federation",
+                        "SSO Configuration",
+                       "Security Policies",
+                       "Testing SAML",
+                    ]
+                },
+                {
+                    title: "Zero Trust for E-Learning Platforms",
+                    link: "https://www.youtube.com/watch?v=hhS8VdGnfOU",
+                    description: "Apply Zero Trust to secure e-learning environments with continuous verification.",
+                    duration: "10 hours",
+                    syllabus: [
+                       "Zero Trust Basics",
+                       "Access Controls",
+                       "Device Validation",
+                       "Monitoring",
+                       "Incident Response",
+                    ]
+                },
+                {
+                    title: "OWASP Security Auditing for Web Apps",
+                    link: "https://www.youtube.com/watch?v=Pk4IO0NcTw0",
+                    description: "Audit e-learning platforms using OWASP Top 10 to identify and fix vulnerabilities.",
+                    duration: "9 hours",
+                    syllabus: [
+                        "OWASP Top 10",
+                        "Vulnerability Scanning",
+                        "Penetration Testing",
+                        "Fixing Exploits",
+                        "Reporting",
+                    ]
+                }
+            ],
+            mobileSecurity: [
+                {
+                    title: "Flutter with Secure Authentication",
+                    link: "https://www.youtube.com/watch?v=1gDhl4leEzA",
+                    description: "Build secure Flutter apps with OAuth 2.0 and encrypted storage.",
+                    duration: "9 hours",
+                    syllabus: [
+                        "Flutter Basics",
+                        "OAuth 2.0 Setup",
+                        "Encrypted Storage",
+                        "Secure APIs",
+                        "App Testing",
+                    ]
+                },
+                {
+                    title: "React Native with TLS and JWT",
+                    link: "https://www.youtube.com/watch?v=9vydY9SDtAo",
+                    description: "Develop secure React Native apps with TLS and JWT auth.",
+                    duration: "8 hours",
+                    syllabus: ["React Native Basics", "TLS Configuration", "JWT Authentication", "Secure Navigation", "App Publishing"]
+                },
+                {
+                    title: "SwiftUI with Secure iOS Apps",
+                    link: "https://www.youtube.com/watch?v=zLvbXdYQzag",
+                    description: "Create secure iOS apps with SwiftUI, using HTTPS and secure keychain storage.",
+                    duration: "12 hours",
+                    syllabus: ["SwiftUI Fundamentals", "HTTPS Integration", "Keychain Security", "Secure Data Flow", "App Store Security"]
+                },
+                {
+                    title: "Kotlin for Secure Android Development",
+                    link: "https://www.youtube.com/watch?v=BCSlZIUj18Y",
+                    description: "Build secure Android apps with Kotlin, integrating OAuth 2.0 and TLS.",
+                    duration: "9 hours",
+                    syllabus: [
+                        "Kotlin Basics",
+                        "OAuth 2.0 Setup",
+                        "TLS Encryption",
+                        "Secure Storage",
+                        "Play Store Security",
+                    ]
+                },
+                {
+                    title: "Mobile App Security with Firebase",
+                    link: "https://www.youtube.com/watch?v=-cMqr9HpZ-Y",
+                    description: "Secure mobile apps with Firebase Auth, Firestore, and Zero Trust principles.",
+                    duration: "9 hours",
+                    syllabus: ["Firebase Setup", "OAuth with Firebase", "Firestore Security Rules", "Zero Trust Policies", "App Testing"]
+                }
+            ],
+            dataScience: [
+                {
+                    title: "Python for Secure Data Science",
+                    link: "https://www.youtube.com/watch?v=9JZxnVkqgqo",
+                    description: "Use Python for secure data analysis with encrypted data handling.",
+                    duration: "10 hours",
+                    syllabus: [
+                        "Python Basics",
+                        "Data Encryption",
+                        "Secure Pandas",
+                        "Visualization Security",
+                        "Data Analysis",
+                    ]
+                },
+                {
+                    title: "Machine Learning with Secure Models",
+                    link: "https://www.youtube.com/watch?v=utbRVEbntxI",
+                    description: "Build ML models with Scikit-learn, ensuring data privacy and secure APIs.",
+                    duration: "12 hours",
+                    syllabus: [
+                        "ML Basics",
+                        "Data Privacy",
+                        "Secure Model Training",
+                        "API Security",
+                        "Model Evaluation",
+                    ]
+                },
+                {
+                    title: "SQL for Secure Data Analysis",
+                    link: "https://www.youtube.com/watch?v=7mz73uXD9DA",
+                    description: "Master secure SQL queries with encryption and access controls.",
+                    duration: "8 hours",
+                    syllabus: [
+                        "SQL Basics",
+                        "Encrypted Queries",
+                        "Access Controls",
+                        "Joins Security",
+                        "Query Optimization",
+                    ]
+                },
+                {
+                    title: "Deep Learning with Secure TensorFlow",
+                    link: "https://www.youtube.com/watch?v=5E71_AxS4jw",
+                    description: "Develop secure neural networks with TensorFlow, using HTTPS for data transfer.",
+                    duration: "15 hours",
+                    syllabus: [
+                        "Neural Network Basics",
+                        "TensorFlow Security",
+                        "HTTPS Data Transfer",
+                        "Model Privacy",
+                        "Deployment",
+                    ]
+                },
+                {
+                    title: "Big Data Security with PySpark",
+                    link: "https://www.youtube.com/watch?v=oa9djT9lra8",
+                    description: "Process big data securely with PySpark, applying Zero Trust principles.",
+                    duration: "10 hours",
+                    syllabus: [
+                        "PySpark Basics",
+                        "Data Encryption",
+                        "Zero Trust Access",
+                        "Distributed Security",
+                        "Performance Tuning",
+                    ]
+                }
+            ]
+        };
+
+        // DOM Elements
+        const courseContainer = document.getElementById('courseContainer');
+        const authModal = document.getElementById('authModal');
+        const courseModal = document.getElementById('courseModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const closeBtns = document.querySelectorAll('.close-modal');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // Current course being viewed in modal
+        let currentCourse = null;
+
+        // Initialize theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        // Update theme icon
+        function updateThemeIcon(theme) {
+            const icon = themeToggle.querySelector('i');
+            if (icon) {
+                icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+            }
+        }
+
+        // Render courses
+        function renderCourses() {
+            if (!courseContainer) return;
+            
+            courseContainer.innerHTML = '';
+
+            Object.entries(courses).forEach(([category, categoryCourses]) => {
+                const categorySection = document.createElement('div');
+                categorySection.className = 'course-category';
+                categorySection.innerHTML = `<h2>${getCategoryTitle(category)}</h2>`;
+
+                const courseGrid = document.createElement('div');
+                courseGrid.className = 'course-grid';
+
+                categoryCourses.forEach(course => {
+                    const courseCard = document.createElement('div');
+                    courseCard.className = 'course-card';
+                    courseCard.innerHTML = `
+                        <h3>${course.title}</h3>
+                        <div class="duration">${course.duration}</div>
+                        <p>${course.description}</p>
+                        <a href="${course.link}" target="_blank">Start Learning</a>
+                    `;
+
+                    // Add click event to show modal
+                    courseCard.addEventListener('click', (e) => {
+                        if (!e.target.closest('a')) {
+                            currentCourse = course;
+                            showCourseModal(course);
+                        }
+                    });
+
+                    courseGrid.appendChild(courseCard);
+                });
+
+                categorySection.appendChild(courseGrid);
+                courseContainer.appendChild(categorySection);
+            });
+        }
+
+        // Show course modal
+        function showCourseModal(course) {
+            if (!courseModal) return;
+            
+            document.getElementById('modalCourseTitle').textContent = course.title;
+            document.getElementById('modalCourseDescription').textContent = course.description;
+            document.getElementById('modalCourseLink').href = course.link;
+
+            const syllabusList = document.getElementById('courseSyllabus');
+            if (syllabusList) {
+                syllabusList.innerHTML = '';
+                course.syllabus.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    syllabusList.appendChild(li);
+                });
+            }
+            
+            courseModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            if (courseModal) courseModal.classList.remove('active');
+            if (authModal) authModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Get category title
+        function getCategoryTitle(category) {
+            const titles = {
+                webSecurity: '🔒 Web Security Fundamentals',
+                secureWebDev: '🌐 Web Development with Security',
+                pythonSecurity: '🐍 Python for Secure Applications',
+                cyberOps: '🛡️ Cybersecurity Operations',
+                mobileSecurity: '📱 Mobile App Security',
+                dataScience: '📊 Data Science with Security',
+            };
+            return titles[category] || category;
+        }
+
+        // Auth functions
+        function login(email, password) {
+            try {
+                if (!email || !password) {
+                    throw new Error('Email and password are required');
+                }
+
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.email === email && u.password === password);
+
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    updateNavigation(true);
+                    window.location.href = '#courses';
+                    closeModal();
+                    return true;
+                }
+
+                const loginError = document.getElementById('loginError');
+                if (loginError) {
+                    loginError.textContent = 'Invalid email or password';
+                    loginError.style.display = 'block';
+                }
+                return false;
+            } catch (error) {
+                console.error('Login error:', error);
+                const loginError = document.getElementById('loginError');
+                if (loginError) {
+                    loginError.textContent = error.message;
+                    loginError.style.display = 'block';
+                }
+                return false;
+            }
+        }
+
+        function validateLoginForm() {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const email = document.getElementById('loginEmail')?.value;
+            const password = document.getElementById('loginPassword')?.value;
+            
+            if (!email || !password) {
+                const loginError = document.getElementById('loginError');
+                if (loginError) {
+                    loginError.textContent = 'Please fill in all fields';
+                    loginError.style.display = 'block';
+                }
+                return false;
+            }
+
+            return login(email, password);
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('loginPassword');
+            const toggleIcon = document.getElementById('togglePassword');
+
+            if (passwordInput && toggleIcon) {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleIcon.className = 'fas fa-eye-slash';
+                } else {
+                    passwordInput.type = 'password';
+                    toggleIcon.className = 'fas fa-eye';
+                }
+            }
+        }
+
+        function register(username, email, password, confirmPassword) {
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return false;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+            if (users.find(u => u.email === email)) {
+                alert('Email already registered!');
+                return false;
+            }
+
+            const newUser = { username, email, password, verified: true, id: Date.now().toString() };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert('Registration successful! Please login.');
+            showAuthForm('login');
+            return true;
+        }
+
+        function showAuthForm(type) {
+            const authForms = document.getElementById('authForms');
+            if (!authForms) return;
+
+            if (type === 'login') {
+                authForms.innerHTML = `
+                    <h2>Welcome Back!</h2>
+                    <p>Sign in to access your courses and continue learning.</p>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                            <i class="fas fa-eye" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                        </div>
+                        <div id="loginError" class="error-message"></div>
+                        <button type="submit">Sign In</button>
+                        <div class="register-link">
+                            Don't have an account? <a href="#" id="showRegister">Register</a>
+                        </div>
+                    </form>
+                `;
+
+                const loginForm = document.getElementById('loginForm');
+                if (loginForm) {
+                    loginForm.onsubmit = (e) => {
+                        e.preventDefault();
+                        const email = document.getElementById('loginEmail')?.value;
+                        const password = document.getElementById('loginPassword')?.value;
+                        if (email && password) {
+                            login(email, password);
+                        }
+                    };
+                }
+
+                const showRegister = document.getElementById('showRegister');
+                if (showRegister) {
+                    showRegister.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showAuthForm('register');
+                    });
+                }
+            } else {
+                authForms.innerHTML = `
+                    <h2>Create Account</h2>
+                    <p>Join our learning community today.</p>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <input type="text" id="registerUsername" placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="registerPassword" placeholder="Create password" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="registerConfirmPassword" placeholder="Confirm password" required>
+                        </div>
+                        <div id="registerError" class="error-message"></div>
+                        <button type="submit">Register</button>
+                        <div class="register-link">
+                            Already have an account? <a href="#" id="showLogin">Login</a>
+                        </div>
+                    </form>
+                `;
+
+                const registerForm = document.getElementById('registerForm');
+                if (registerForm) {
+                    registerForm.onsubmit = (e) => {
+                        e.preventDefault();
+                        const username = document.getElementById('registerUsername')?.value;
+                        const email = document.getElementById('registerEmail')?.value;
+                        const password = document.getElementById('registerPassword')?.value;
+                        const confirmPassword = document.getElementById('registerConfirmPassword')?.value;
+                        if (username && email && password && confirmPassword) {
+                            register(username, email, password, confirmPassword);
+                        }
+                    };
+                }
+
+                const showLogin = document.getElementById('showLogin');
+                if (showLogin) {
+                    showLogin.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showAuthForm('login');
+                    });
+                }
+            }
+        }
+
+        function updateNavigation(isLoggedIn) {
+            const navLinks = document.querySelector('.nav-links');
+            if (!navLinks) return;
+
+            if (isLoggedIn) {
+                const user = JSON.parse(localStorage.getItem('currentUser'));
+                navLinks.innerHTML = `
+                    <a href="#home">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#courses">Courses</a>
+                    <a href="#instructors">Instructors</a>
+                    <a href="#support">Support</a>
+                    <a href="#contact">Contact</a>
+                    <div class="dropdown">
+                        <button class="dropbtn" id="userDropdown">
+                            ${user?.username || 'Account'} <i class="fas fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#profile">My Profile</a>
+                            <a href="#settings">Settings</a>
+                            <a href="#" id="logoutBtn">Logout</a>
+                        </div>
+                    </div>
+                    <button id="themeToggle" class="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                `;
+
+                document.getElementById('logoutBtn')?.addEventListener('click', logout);
+            } else {
+                navLinks.innerHTML = `
+                    <a href="#home">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#courses">Courses</a>
+                    <a href="#instructors">Instructors</a>
+                    <a href="#support">Support</a>
+                    <a href="#contact">Contact</a>
+                    <div class="auth-buttons">
+                        <button id="loginBtn">Login</button>
+                        <button id="registerBtn">Register</button>
+                    </div>
+                    <button id="themeToggle" class="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                `;
+
+                document.getElementById('loginBtn')?.addEventListener('click', () => {
+                    showAuthForm('login');
+                    if (authModal) {
+                        authModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+
+                document.getElementById('registerBtn')?.addEventListener('click', () => {
+                    showAuthForm('register');
+                    if (authModal) {
+                        authModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            }
+
+            // Re-attach theme toggle event
+            document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            updateNavigation(false);
+        }
+
+        // Initialize the app
+        function init() {
+            initTheme();
+            renderCourses();
+            updateNavigation(!!localStorage.getItem('currentUser'));
+
+            // Event listeners
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
+
+            // Modal close buttons
+            if (closeBtns) {
+                closeBtns.forEach(btn => {
+                    btn.addEventListener('click', closeModal);
+                });
+            }
+
+            // Click outside modal to close
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal')) {
+                    closeModal();
+                }
+            });
+
+            // Auth modal buttons
+            if (loginBtn) {
+                loginBtn.addEventListener('click', () => {
+                    showAuthForm('login');
+                    if (authModal) {
+                        authModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            }
+
+            if (registerBtn) {
+                registerBtn.addEventListener('click', () => {
+                    showAuthForm('register');
+                    if (authModal) {
+                        authModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            }
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Intersection Observer for animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.course-card').forEach(card => {
+                if (card) observer.observe(card);
+            });
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/intro.min.js"></script>
+    <script src="sw.js"></script>
+    <script src="utils.js"></script>
+</body>
+</html>
