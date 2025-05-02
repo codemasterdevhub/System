@@ -292,100 +292,180 @@
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
-        /* Magic Card Team Section */
-        .perspective {
-            perspective: 1200px;
-        }
-        
-        .magic-card-inner {
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
+        /* Team Carousel Section */
+        .about {
+            background: var(--bg);
+            padding: 6rem 0;
             position: relative;
-            width: 100%;
-            height: 100%;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            border-radius: 1.5rem;
-            will-change: transform;
-        }
-        
-        .magic-card:focus-within .magic-card-inner,
-        .magic-card:hover .magic-card-inner {
-            transform: rotateY(180deg);
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .magic-card-front,
-        .magic-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 1.5rem;
             overflow: hidden;
-            background-color: white;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        
-        .magic-card-front img,
-        .magic-card-back img {
+
+        .about-title {
+            font-size: 2.5rem;
+            color: var(--text);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .about-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 3px;
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px 0;
+            align-items: center;
+            height: 400px;
+        }
+
+        .card {
+            position: absolute;
+            width: 250px;
+            height: 350px;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transform-origin: center center;
+        }
+
+        .card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 1.5rem;
-            transition: transform 0.8s ease;
         }
-        
-        .magic-card:focus-within .magic-card-front img,
-        .magic-card:hover .magic-card-front img {
-            transform: scale(1.05);
-            filter: brightness(0.85);
+
+        .card.center {
+            left: 50%;
+            transform: translateX(-50%) scale(1);
+            z-index: 10;
         }
-        
-        .magic-card-back {
-            transform: rotateY(180deg);
+
+        .card.left-1 {
+            left: 30%;
+            transform: translateX(-50%) scale(0.9);
+            z-index: 9;
+            opacity: 0.9;
+        }
+
+        .card.left-2 {
+            left: 15%;
+            transform: translateX(-50%) scale(0.8);
+            z-index: 8;
+            opacity: 0.7;
+        }
+
+        .card.right-1 {
+            left: 70%;
+            transform: translateX(-50%) scale(0.9);
+            z-index: 9;
+            opacity: 0.9;
+        }
+
+        .card.right-2 {
+            left: 85%;
+            transform: translateX(-50%) scale(0.8);
+            z-index: 8;
+            opacity: 0.7;
+        }
+
+        .card.hidden {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.7);
+            z-index: 0;
+        }
+
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            color: var(--text);
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 20;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #bbf7d0 0%, #93c5fd 100%);
-            color: #1e293b;
-            text-shadow: 0 1px 2px rgba(255,255,255,0.7);
+            transition: all 0.3s;
+            border: 1px solid var(--accent);
         }
-        
-        .magic-card-back .small-image {
-            width: 8rem;
-            height: 8rem;
+
+        .nav-arrow:hover {
+            background: var(--hover-bg);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-arrow.left {
+            left: 0;
+        }
+
+        .nav-arrow.right {
+            right: 0;
+        }
+
+        .member-info {
+            text-align: center;
+            margin-top: 2rem;
+            transition: all 0.5s ease;
+        }
+
+        .member-name {
+            font-size: 2rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .member-role {
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-            transition: transform 0.8s ease;
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid var(--accent);
         }
-        
-        .magic-card:focus-within .magic-card-back .small-image,
-        .magic-card:hover .magic-card-back .small-image {
-            transform: scale(1.05);
-        }
-        
-        .magic-card h2 {
-            width: 100%;
-            text-align: center;
-            font-weight: 700;
-            font-size: 1.25rem;
-            line-height: 1.375rem;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            letter-spacing: 0.02em;
-        }
-        
-        .magic-card p {
-            width: 100%;
-            text-align: center;
-            font-size: 1rem;
-            margin-top: 0.5rem;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #334155;
+
+        .dot.active {
+            background: var(--accent);
+            transform: scale(1.2);
         }
 
         /* Feature Cards Section */
@@ -560,12 +640,6 @@
           height: 3px;
           background: linear-gradient(to right, var(--accent), var(--primary));
           border-radius: 3px;
-        }
-
-        /* Team Section */
-        .team {
-          background: var(--bg);
-          padding: 6rem 0;
         }
 
         /* Course Cards */
@@ -1136,6 +1210,63 @@
           .features .section-title {
             font-size: 2rem;
           }
+
+          /* Carousel mobile styles */
+          .carousel-container {
+            padding: 0 30px;
+          }
+
+          .card {
+            width: 200px;
+            height: 300px;
+          }
+
+          .card.left-1 {
+            left: 25%;
+          }
+
+          .card.left-2 {
+            left: 10%;
+          }
+
+          .card.right-1 {
+            left: 75%;
+          }
+
+          .card.right-2 {
+            left: 90%;
+          }
+
+          .member-name {
+            font-size: 1.5rem;
+          }
+
+          .member-role {
+            font-size: 1rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .card {
+            width: 180px;
+            height: 270px;
+          }
+
+          .card.left-1 {
+            left: 20%;
+          }
+
+          .card.left-2 {
+            left: 5%;
+          }
+
+          .card.right-1 {
+            left: 80%;
+          }
+
+          .card.right-2 {
+            left: 95%;
+          }
         }
     </style>
 </head>
@@ -1158,7 +1289,8 @@
                     <a href="#courses">Data Science with Security</a>
                 </div>
             </div>
-            <a href="#team" class="scroll-link">About</a>
+            <!-- Fixed: Changed href to lowercase #about -->
+            <a href="#about" class="scroll-link">Our Group</a>
             <a href="#instructors">Instructors</a>
             <a href="#support">Support</a>
             <a href="#contact">Contact</a>
@@ -1183,137 +1315,63 @@
         </div>
     </section>
 
-    <section id="team" class="team">
+    <!-- Fixed: Changed section ID to lowercase to match nav link -->
+    <section id="about" class="about">
         <div class="section-container">
-            <h2 class="section-title">Our Team</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
-                <!-- Team Member 1 -->
-                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
-                    <div class="magic-card-inner">
-                        <div class="magic-card-front">
-                            <img alt="Team member" src="1.jpg" />
-                        </div>
-                        <div class="magic-card-back">
-                            <div class="small-image">
-                                <img alt="Team member" src="1.jpg" />
-                            </div>
-                            <h2>Henvilou Alberto</h2>
-                            <p>Team Leader</p>
-                        </div>
+            <h2 class="about-title">Our Team</h2>
+            <div class="carousel-container">
+                <button class="nav-arrow left">‹</button>
+                <div class="carousel-track">
+                    <!-- Team Member 1 -->
+                    <div class="card" data-index="0">
+                        <img src="1.jpg" alt="Henvilou Alberto">
+                    </div>
+                    <!-- Team Member 2 -->
+                    <div class="card" data-index="1">
+                        <img src="adrian.jpg" alt="Adrian Dumlao">
+                    </div>
+                    <!-- Team Member 3 -->
+                    <div class="card" data-index="2">
+                        <img src="mark.jpg" alt="Mark Angelo Delos Santos">
+                    </div>
+                    <!-- Team Member 4 -->
+                    <div class="card" data-index="3">
+                        <img src="mhea.jpg" alt="Mheagan Batics Balog">
+                    </div>
+                    <!-- Team Member 5 -->
+                    <div class="card" data-index="4">
+                        <img src="markluis.jpg" alt="Mark Luis G. Veronique">
+                    </div>
+                    <!-- Team Member 6 -->
+                    <div class="card" data-index="5">
+                        <img src="tristan.jpg" alt="Tristan Marc Calubaquib">
+                    </div>
+                    <!-- Team Member 7 -->
+                    <div class="card" data-index="6">
+                        <img src="sebastian.jpg" alt="Sebastian Valmont">
+                    </div>
+                    <!-- Team Member 8 -->
+                    <div class="card" data-index="7">
+                        <img src="ken.jpg" alt="Ken Peregrino">
                     </div>
                 </div>
-                
-                <!-- Team Member 2 -->
-                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
-                    <div class="magic-card-inner">
-                        <div class="magic-card-front">
-                            <img alt="Team member" src="adrian.jpg" />
-                        </div>
-                        <div class="magic-card-back">
-                            <div class="small-image">
-                                <img alt="Team member" src="adrian.jpg" />
-                            </div>
-                            <h2>Adrian Dumlao</h2>
-                            <p>Security Expert</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Team Member 3 -->
-                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
-                    <div class="magic-card-inner">
-                        <div class="magic-card-front">
-                            <img alt="Team member" src="mark.jpg" />
-                        </div>
-                        <div class="magic-card-back">
-                            <div class="small-image">
-                                <img alt="Team member" src="mark.jpg" />
-                            </div>
-                            <h2>Mark Angelo Delos Santos</h2>
-                            <p>Frontend Developer</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Team Member 4 -->
-                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
-                    <div class="magic-card-inner">
-                        <div class="magic-card-front">
-                            <img alt="Team member" src="mhea.jpg" />
-                        </div>
-                        <div class="magic-card-back">
-                            <div class="small-image">
-                                <img alt="Team member" src="mhea.jpg" />
-                            </div>
-                            <h2>Mheagan Batics Balog</h2>
-                            <p>Backend Developer</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Team Member 5 -->
-                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
-                    <div class="magic-card-inner">
-                        <div class="magic-card-front">
-                            <img alt="Team member" src="markluis.jpg" />
-                        </div>
-                        <div class="magic-card-back">
-                            <div class="small-image">
-                                <img alt="Team member" src="markluis.jpg" />
-                            </div>
-                            <h2>Mark Luis G. Veronique</h2>
-                            <p>UI/UX Designer</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Team Member 6 -->
-                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
-                    <div class="magic-card-inner">
-                        <div class="magic-card-front">
-                            <img alt="Team member" src="tristan.jpg" />
-                        </div>
-                        <div class="magic-card-back">
-                            <div class="small-image">
-                                <img alt="Team member" src="tristan.jpg" />
-                            </div>
-                            <h2>Tristan Marc Calubaquib</h2>
-                            <p>Content Creator</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Team Member 7 -->
-                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
-                    <div class="magic-card-inner">
-                        <div class="magic-card-front">
-                            <img alt="Team member" src="sebastian.jpg" />
-                        </div>
-                        <div class="magic-card-back">
-                            <div class="small-image">
-                                <img alt="Team member" src="sebastian.jpg" />
-                            </div>
-                            <h2>Sebastian Valmont</h2>
-                            <p>Quality Assurance</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Team Member 8 -->
-                <div tabindex="0" class="magic-card perspective mx-auto" style="width: 250px; height: 350px;">
-                    <div class="magic-card-inner">
-                        <div class="magic-card-front">
-                            <img alt="Team member" src="ken.jpg" />
-                        </div>
-                        <div class="magic-card-back">
-                            <div class="small-image">
-                                <img alt="Team member" src="ken.jpg" />
-                            </div>
-                            <h2>Ken Peregrino</h2>
-                            <p>DevOps Engineer</p>
-                        </div>
-                    </div>
-                </div>
+                <button class="nav-arrow right">›</button>
+            </div>
+
+            <div class="member-info">
+                <h2 class="member-name">Henvilou Alberto</h2>
+                <p class="member-role">Team Leader</p>
+            </div>
+
+            <div class="dots">
+                <div class="dot active" data-index="0"></div>
+                <div class="dot" data-index="1"></div>
+                <div class="dot" data-index="2"></div>
+                <div class="dot" data-index="3"></div>
+                <div class="dot" data-index="4"></div>
+                <div class="dot" data-index="5"></div>
+                <div class="dot" data-index="6"></div>
+                <div class="dot" data-index="7"></div>
             </div>
         </div>
     </section>
@@ -1523,6 +1581,18 @@
     </div>
 
     <script>
+        // Team members data
+        const teamMembers = [
+            { name: "Henvilou Alberto", role: "Team Leader" },
+            { name: "Adrian Dumlao", role: "Security Expert" },
+            { name: "Mark Angelo Delos Santos", role: "Frontend Developer" },
+            { name: "Mheagan Batics Balog", role: "Backend Developer" },
+            { name: "Mark Luis G. Veronique", role: "UI/UX Designer" },
+            { name: "Tristan Marc Calubaquib", role: "Content Creator" },
+            { name: "Sebastian Valmont", role: "Quality Assurance" },
+            { name: "Ken Peregrino", role: "DevOps Engineer" }
+        ];
+
         // Course data with all categories
         const courses = {
             webSecurity: [
@@ -1830,6 +1900,16 @@
         const closeBtns = document.querySelectorAll('.close-modal');
         const themeToggle = document.getElementById('themeToggle');
 
+        // Carousel elements
+        const cards = document.querySelectorAll(".card");
+        const dots = document.querySelectorAll(".dot");
+        const memberName = document.querySelector(".member-name");
+        const memberRole = document.querySelector(".member-role");
+        const leftArrow = document.querySelector(".nav-arrow.left");
+        const rightArrow = document.querySelector(".nav-arrow.right");
+        let currentIndex = 0;
+        let isAnimating = false;
+
         // Current course being viewed in modal
         let currentCourse = null;
 
@@ -1855,6 +1935,37 @@
             if (icon) {
                 icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
             }
+        }
+
+        // Update carousel
+        function updateCarousel(newIndex) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            currentIndex = newIndex;
+
+            cards.forEach((card, index) => {
+                card.className = "card"; // reset classes
+
+                const offset = index - currentIndex;
+
+                if (offset === 0) card.classList.add("center");
+                else if (offset === -1) card.classList.add("left-1");
+                else if (offset === -2) card.classList.add("left-2");
+                else if (offset === 1) card.classList.add("right-1");
+                else if (offset === 2) card.classList.add("right-2");
+                else card.classList.add("hidden");
+            });
+
+            dots.forEach(dot => dot.classList.remove("active"));
+            dots[currentIndex].classList.add("active");
+
+            memberName.textContent = teamMembers[currentIndex].name;
+            memberRole.textContent = teamMembers[currentIndex].role;
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 800);
         }
 
         // Render courses
@@ -2197,6 +2308,25 @@
             initTheme();
             renderCourses();
             updateNavigation(!!localStorage.getItem('currentUser'));
+
+            // Initialize carousel
+            updateCarousel(0);
+
+            // Carousel event listeners
+            leftArrow.addEventListener("click", () => {
+                updateCarousel((currentIndex - 1 + teamMembers.length) % teamMembers.length);
+            });
+
+            rightArrow.addEventListener("click", () => {
+                updateCarousel((currentIndex + 1) % teamMembers.length);
+            });
+
+            dots.forEach(dot => {
+                dot.addEventListener("click", () => {
+                    const index = parseInt(dot.getAttribute("data-index"));
+                    updateCarousel(index);
+                });
+            });
 
             // Event listeners
             if (themeToggle) {
